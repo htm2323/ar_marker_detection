@@ -10,7 +10,7 @@ from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
 from geometry_msgs.msg import TransformStamped
 
-from ar_detection_srvs.srv import TransformListen
+from ar_detection_srv.srv import TransformListen
 
 class NodeHL2TransformListener(Node):
     def __init__(self):

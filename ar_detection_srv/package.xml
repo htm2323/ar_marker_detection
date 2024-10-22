@@ -4,7 +4,7 @@
   <name>ar_detection_srv</name>
   <version>0.0.1</version>
   <description>Services of ar_detection</description>
-  <maintainer email="xxxx">htm2323</maintainer>
+  <maintainer email="honjo@i.ci.ritsumei.ac.jp">htm2323</maintainer>
   <license>MIT License</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

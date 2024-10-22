@@ -4,7 +4,7 @@
   <name>ar_detection</name>
   <version>0.0.0</version>
   <description>detect AR marker and estimate camera pose, then publish tf</description>
-  <maintainer email="xxxx">htm2323</maintainer>
+  <maintainer email="honjo@i.ci.ritsumei.ac.jp">htm2323</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
