@@ -25,7 +25,7 @@ class camera_point(ImagePreviewNode):
         
         self.marker_in_world_coordinate = np.array([0.3,0,0]) #ワールド座標系における、印の位置
         
-        self.marker_size = 0.247 #マーカーの１辺 0.1m = 10cm
+        self.marker_size = 0.247 #マーカーの１辺 0.1m = 10cm marker length scale is meter
         self.corners = None #マーカーの角
         self.ids = None #マーカーのID
         
@@ -79,7 +79,7 @@ class camera_point(ImagePreviewNode):
         corners, ids, rejected = self.detector.detectMarkers(color_img) #入力画像からArucoマーカーを検出
         result = color_img.copy() #軸表示結果のための配列
         
-        self.camera_matrix = camera_info.k.reshape((3,3)) #カメラ焦点行列の更新
+        self.camera_matrix = camera_info.k.reshape((3,3)) #カメラ焦点行列の更新 focal length in camera matrix scale is milimeter
         self.dist_coeffs = np.array(camera_info.d,dtype=np.float32) #画像歪みベクトルの更新
         
         if self.img_size is None: #画像サイズの固定
@@ -100,7 +100,8 @@ class camera_point(ImagePreviewNode):
                     break
                 
             if ID_cheaker: #ID1のマーカーがあれば
-                
+                # get transform looking from ar marker to camera position
+                # tvec scale is meter(m)
                 rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners,self.marker_size,self.camera_matrix,self.dist_coeffs) #回転ベクトル、並進ベクトルの取得
                 if len(self.rvecs_list) < self.frame_count:
                     self.rvecs_list.append(rvecs)
@@ -210,9 +211,9 @@ class camera_point(ImagePreviewNode):
                 transform_msg.header.frame_id = "marker"
                 transform_msg.child_frame_id = "camera"
                 # print(self.tvec_average)
-                transform_msg.transform.translation.x = self.tvec_average[0][0][0]
-                transform_msg.transform.translation.y = self.tvec_average[0][0][1]
-                transform_msg.transform.translation.z = self.tvec_average[0][0][2]
+                transform_msg.transform.translation.x = self.tvec_average[0][0][0] #* 1000 # if you want to cnvert scale from meter to milimeter
+                transform_msg.transform.translation.y = self.tvec_average[0][0][1] #* 1000 # please multiple 1000
+                transform_msg.transform.translation.z = self.tvec_average[0][0][2] #* 1000
                 rmat, _ = cv2.Rodrigues(self.rvec_average)
                 q = quaternion.from_rotation_matrix(rmat,nonorthogonal=True)
                 # print(q)
